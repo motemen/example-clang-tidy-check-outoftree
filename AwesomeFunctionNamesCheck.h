@@ -9,7 +9,7 @@
 #ifndef LLVM_CLANG_TOOLS_EXTRA_CLANG_TIDY_READABILITY_AWESOMEFUNCTIONNAMESCHECK_H
 #define LLVM_CLANG_TOOLS_EXTRA_CLANG_TIDY_READABILITY_AWESOMEFUNCTIONNAMESCHECK_H
 
-#include "../ClangTidyCheck.h"
+#include "clang-tidy/ClangTidyCheck.h"
 
 namespace clang::tidy::readability {
 
