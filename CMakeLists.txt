@@ -16,3 +16,12 @@ target_link_libraries(AwesomeFunctionNames PRIVATE
     clangTidy
     clangTidyUtils
 )
+
+enable_testing()
+
+add_test(
+    NAME main
+    COMMAND python ${CMAKE_SOURCE_DIR}/test/check_clang_tidy.py ${CMAKE_SOURCE_DIR}/test/awesome-function-names.cpp readability-awesome-function-names tmp --
+        -load=${CMAKE_BINARY_DIR}/libAwesomeFunctionNamesCheck_${LLVM_VERSION_MAJOR}.so
+    WORKING_DIRECTORY ..
+)
