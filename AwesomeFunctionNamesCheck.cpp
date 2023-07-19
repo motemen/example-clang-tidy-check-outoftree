@@ -7,6 +7,8 @@
 //===----------------------------------------------------------------------===//
 
 #include "AwesomeFunctionNamesCheck.h"
+#include "clang-tidy/ClangTidyModule.h"
+#include "clang-tidy/ClangTidyModuleRegistry.h"
 #include "clang/AST/ASTContext.h"
 #include "clang/ASTMatchers/ASTMatchFinder.h"
 
@@ -22,7 +24,8 @@ void AwesomeFunctionNamesCheck::registerMatchers(MatchFinder *Finder) {
 void AwesomeFunctionNamesCheck::check(const MatchFinder::MatchResult &Result) {
   // FIXME: Add callback implementation.
   const auto *MatchedDecl = Result.Nodes.getNodeAs<FunctionDecl>("x");
-  if (!MatchedDecl->getIdentifier() || MatchedDecl->getName().startswith("awesome_"))
+  if (!MatchedDecl->getIdentifier() ||
+      MatchedDecl->getName().startswith("awesome_"))
     return;
   diag(MatchedDecl->getLocation(), "function %0 is insufficiently awesome")
       << MatchedDecl
@@ -31,3 +34,18 @@ void AwesomeFunctionNamesCheck::check(const MatchFinder::MatchResult &Result) {
 }
 
 } // namespace clang::tidy::readability
+
+namespace clang::tidy {
+
+class ExtraModule : public ClangTidyModule {
+public:
+  void addCheckFactories(ClangTidyCheckFactories &CheckFactories) override {
+    CheckFactories.registerCheck<readability::AwesomeFunctionNamesCheck>(
+        "readability-awesome-function-names");
+  }
+};
+
+static ClangTidyModuleRegistry::Add<ExtraModule> X("extra-module",
+                                                   "Adds extra lint checks.");
+
+} // namespace clang::tidy
